@@ -1,12 +1,8 @@
-## Ideias para implementar futuramente ##
-##
-## -> Seta para indicar de quem é o turno.
-## -> Imagem para girar o tambor.
-## -> Animações.
-## -> Interações direto pelo teclado (sem botões).
-## -> Botão 'Mais' no menu inicial.
-
-
+## TODO Seta para indicar de quem é o turno.
+## TODO Imagem para girar o tambor.
+## TODO Animações.
+## TODO Interações direto pelo teclado (sem botões).
+## TODO Botão 'Mais' no menu inicial.
 
 from tkinter import *
 from PIL import Image, ImageTk
@@ -122,7 +118,7 @@ class Game():
         self.frame = Frame(window,bg='#040404') # Segundo Frame / Introdução
         self.frame.pack(fill=BOTH,expand=True)
 
-        image = Image.open("D:\Estudos\Codes\RoletaRussa\Imagens\Vorgoth.jpg") # Carrega Imagem
+        image = Image.open("D:\Estudos\Codes\Russian-Roulet-Game\Imagens\Vorgoth.jpg") # Carrega Imagem
         photo = ImageTk.PhotoImage(image)
         label_image = Label(self.frame, image=photo,bd=-1,width=600,height=600) 
         label_image.image = photo
@@ -153,7 +149,7 @@ class Game():
         self.button_play.config(state=DISABLED)
         
         if bullets[0] == 1:
-            image = Image.open("D:\Estudos\Codes\RoletaRussa\Imagens\BANG!.jpg") 
+            image = Image.open("D:\Estudos\Codes\Russian-Roulet-Game\Imagens\BANG!.jpg") 
             photo = ImageTk.PhotoImage(image)
             self.label_Shoot.config(image=photo,width=500,height=500)
             self.label_Shoot.image = photo
@@ -174,7 +170,7 @@ class Game():
         global bullets,txts_CpuTurn
 
         if bullets[1] == 1:
-            image = Image.open("D:\Estudos\Codes\RoletaRussa\Imagens\BANG!.jpg") 
+            image = Image.open("D:\Estudos\Codes\Russian-Roulet-Game\Imagens\BANG!.jpg") 
             photo = ImageTk.PhotoImage(image)
             self.label_Shoot.config(image=photo,width=500,height=500)
             self.label_Shoot.image = photo
@@ -210,13 +206,13 @@ class Game():
         self.frame = Frame(window,bg='#010200') # Terceiro Frame / Jogo 
         self.frame.pack(fill=BOTH,expand=True)
         
-        image1 = Image.open("D:\Estudos\Codes\RoletaRussa\Imagens\Vorgoth_semArma.jpg") # Carrega a imagem canto superior direito (Vorgoth)
+        image1 = Image.open("D:\Estudos\Codes\Russian-Roulet-Game\Imagens\Vorgoth_semArma.jpg") # Carrega a imagem canto superior direito (Vorgoth)
         photo = ImageTk.PhotoImage(image1)
         label_image1 = Label(self.frame,image=photo,width=350,height=350)
         label_image1.image = photo
         label_image1.place(relx=1,rely=0,anchor='ne')
 
-        image2 = Image.open("D:\Estudos\Codes\RoletaRussa\Imagens\Sombra.jpg") # Carrega a imagem canto inferior esquerdo (Sombra)
+        image2 = Image.open("D:\Estudos\Codes\Russian-Roulet-Game\Imagens\Sombra.jpg") # Carrega a imagem canto inferior esquerdo (Sombra)
         photo = ImageTk.PhotoImage(image2)
         label_image2 = Label(self.frame,image=photo,width=500,height=400)
         label_image2.image = photo
