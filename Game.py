@@ -1,8 +1,9 @@
 ## TODO Seta para indicar de quem é o turno.
 ## TODO Imagem para girar o tambor.
-## TODO Animações.
 ## TODO Interações direto pelo teclado (sem botões).
 ## TODO Botão 'Mais' no menu inicial.
+## TODO Mover txts para um arquivo .txt
+## TODO Versão em inglês
 
 from tkinter import *
 from PIL import Image, ImageTk
