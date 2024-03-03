@@ -1,0 +1,17 @@
+start=Inicio
+quit=Sair
+options=Opções
+made_by=Feito por Luis Castanho
+ready_to_play=Esta pronto para jogar?
+yes=Sim
+no=Não
+lets_go=Muito bem, vamos lá!
+no_choice=Você não tem escolha!
+loss=Ops... que pena! Sua alma agora é minha.
+Cpu_turn=Minha vez agora!
+win=Aff... Que azar... Você está livre... se manda antes que eu mude de ideia.
+Player_turn=Sua vez agora! Gire de novo.
+instructions=É só girar o tambor e apertar o gatilho!
+instructions2=Agora é só atirar!
+spin=GIRAR
+shoot=ATIRAR

@@ -2,41 +2,37 @@
 ## TODO Imagem para girar o tambor.
 ## TODO Interações direto pelo teclado (sem botões).
 ## TODO Botão 'Mais' no menu inicial.
-## TODO Mover txts para um arquivo .txt
 ## TODO Versão em inglês
+## TODO Permitir que o usuário digite seu desejo no meio do diálogo.
 
 from tkinter import *
 from PIL import Image, ImageTk
 import random as rd
 from time import *
 
+# Função para ler o texto do arquivo
+def read_dialogue(filename):
+    with open(filename, 'r',encoding='utf-8') as file:
+        return [line.rstrip() for line in file.readlines()] # Remove a quebra de linha
+
+def read_dialogue_words(filename, delimiter='='):
+    with open(filename, 'r', encoding='utf-8') as file:
+        lines = [line.strip() for line in file.readlines()]
+        dialogues = {}
+        for line in lines:
+            key, value = line.split(delimiter)
+            dialogues[key.strip()] = value.strip()
+        return dialogues
+
+language = "txtsPT"
+txts_Game = read_dialogue_words(f"D:\\Estudos\\Codes\\Russian-Roulet-Game\\{language}\\txt_Game.txt")
+
 cont = 0
-txts = ['Olha só quem resolveu aparecer! Há quanto tempo não te vejo!',
-        'Lembra de mim? Não? Que pena. Sou Vorgoth, o diabo que você fez um acordo há muito tempo atrás.',
-        'Qual foi seu desejo mesmo?',
-        'Já faz muito tempo... Não me lembro mais.',
-        'Mas vamos ao que interessa! ',
-        'Você me procurou no passado, oferecendo sua alma em troca de algo que não lembramos.',
-        'Espero que tenha aproveitado seja lá o que pediu, pois vim cobrar minha dívida!',
-        'Para sua sorte, ando muito entediado recentemente...',
-        'Preciso de emoção, então resolvi que vamos jogar um jogo.',
-        'Um jogo de roleta russa! Sabe como funciona né?',
-        'Um revólver, uma bala. Gire o tambor, aperte o gatilho. Quem tiver a sorte de levar o tiro, perde!',
-        'Se você vencer, sua dívida será perdoada. Se perder, coleto sua alma e sigo minha vida.',
-        '...',
-        'Ah, quase me esqueci! Para deixar o jogo mais interessante, você vai girar o tambor antes de cada disparo!']
+txts_VorgothMono = read_dialogue(f"D:\\Estudos\\Codes\\Russian-Roulet-Game\\{language}\\txt_VorgothMonologue.txt")
 
-txts_CpuTurn = ['Finalmente um pouco de emoção!', 
-                'HaHaHa, vamos de novo!!!', 
-                'As coisas estão ficando interessantes...', 
-                'Quanta adrenalina!!',
-                'Parece que estou com sorte hoje!']
+txts_CpuTurn = read_dialogue(f"D:\\Estudos\\Codes\\Russian-Roulet-Game\\{language}\\txt_CpuTurn.txt")
 
-txts_PlayerTurn = ['Ops, parece que você escapou desta vez.',
-                   'Poxa, isso foi anticlimático.',
-                   'Uau! Você está vivo! Por enquanto...',
-                   'Vamos ver até quando sua sorte vai durar...',
-                   'Maldito... Me da essa arma logo.']
+txts_PlayerTurn = read_dialogue(f"D:\\Estudos\\Codes\\Russian-Roulet-Game\\{language}\\txt_PlayerTurn.txt")
 
 bullets = [0]*6 # Cada index da lista simula uma possivel bala da arma
 bullets[rd.randint(0,5)] = 1 # 0 posição vazia, 1 posição carregada
@@ -56,6 +52,7 @@ class Game():
         self.window.geometry("1024x1024")
         self.window.resizable(True,True)
         self.window.attributes('-fullscreen', True) # Adicionar Botão no menu para Usuario escolher
+        global txts_Game
 
     def FirstScreen(self):
         self.frame.pack(fill=BOTH,expand=True)
@@ -70,7 +67,7 @@ class Game():
                                   command=self.SecondScreen,
                                   bd=2,borderwidth=3,relief='ridge',width=10,height=1,
                                   background='#1f0404',padx=10,pady=10,
-                                  foreground= '#e00a0b', font=('Niagara Solid',20), text='Inicio',justify='center',
+                                  foreground= '#e00a0b', font=('Niagara Solid',20), text=txts_Game['start'],justify='center',
                                   highlightbackground='#e00a0b',activebackground='#e00a0b',
                                   cursor='pirate')
 
@@ -78,14 +75,14 @@ class Game():
                                   command=self.window.destroy,
                                   bd=2,borderwidth=3,relief='ridge',width=10,height=1,
                                   background='#1f0404',padx=10,pady=10,
-                                  foreground= '#e00a0b', font=('Niagara Solid',20), text='Sair',justify='center',
+                                  foreground= '#e00a0b', font=('Niagara Solid',20), text=txts_Game['quit'],justify='center',
                                   highlightbackground='#e00a0b',activebackground='#e00a0b',
                                   cursor='pirate')
 
         self.button_Start.place(relx=0.5, rely=0.5, anchor=CENTER)  # Center horizontally and vertically
         self.button_Quit.place(relx=0.5, rely=0.6, anchor=CENTER)
 
-        self.Credits = Label(self.frame,text='Made by Luis Castanho', 
+        self.Credits = Label(self.frame,text=txts_Game['made_by'], 
                             bg='#040404',
                             fg='#e00a0b',font=('Niagara Solid',20,),justify=CENTER,)
         self.Credits.pack(side=BOTTOM,pady=10)
@@ -93,18 +90,18 @@ class Game():
     def change_txt(self):  #Função para alterar os textos que aparecem em historia
         global cont
         cont+=1
-        if cont < len(txts):
-            self.txt_historia.config(text=txts[cont])
+        if cont < len(txts_VorgothMono):
+            self.txt_historia.config(text=txts_VorgothMono[cont])
         else: # Quando os textos chegam ao fim
             self.button_next.destroy()
-            self.txt_historia.config(text='Esta pronto para jogar?')
-            self.buttonYes = Button(self.frame,text='Sim',command=self.ifYes,
+            self.txt_historia.config(text=txts_Game['ready_to_play'])
+            self.buttonYes = Button(self.frame,text=txts_Game['yes'],command=self.ifYes,
                                   bd=2,borderwidth=3,relief='ridge',
                                   background='#040404',padx=10,
                                   foreground= 'WHITE', font=('Arial',16),
                                   width=2,height=1
                                   )
-            self.buttonNo = Button(self.frame,text='Não',command=self.ifNo,
+            self.buttonNo = Button(self.frame,text=txts_Game['no'],command=self.ifNo,
                                   bd=2,borderwidth=3,relief='ridge',
                                   background='#040404',padx=10,
                                   foreground= 'WHITE', font=('Arial',16),
@@ -125,7 +122,7 @@ class Game():
         label_image.image = photo
         label_image.pack(side=TOP,expand=True)
 
-        self.txt_historia = Label(self.frame,text=txts[cont],
+        self.txt_historia = Label(self.frame,text=txts_VorgothMono[cont],
                                 bg='#040404',fg='WHITE',font=('Arial',18),pady=50,relief='ridge') # Label onde os textos para a introdução são mostrados
         self.txt_historia.pack(side=BOTTOM,fill=X,pady=100,padx=100) 
         
@@ -138,11 +135,11 @@ class Game():
         self.button_next.place(relx=0.95, rely=0.99, anchor='se')
         
     def ifYes(self):
-        self.txt_historia.config(text='Muito bem, vamos lá!')
+        self.txt_historia.config(text=txts_Game['lets_go'])
         self.window.after(2000, lambda: self.ThirdScreen())
 
     def ifNo(self):
-        self.txt_historia.config(text='Você não tem escolha.')
+        self.txt_historia.config(text=txts_Game['no_choice'])
         self.window.after(2000, lambda: self.ThirdScreen())
 
     def RR_PlayerTurn(self):
@@ -156,7 +153,7 @@ class Game():
             self.label_Shoot.image = photo
             self.label_Shoot.place(relx=0.5,rely=0.5,anchor='center')
 
-            self.txt_game.config(text='HaHaHa, sua alma é minha agora!')
+            self.txt_game.config(text=txts_Game['loss'])
             self.frame.after(5000, self.window.destroy)
         else:
             self.label_Shoot.config(bg='#010200',bd=-1,text='*click*',font=('Niagara Solid',50,'bold'),fg='WHITE')
@@ -164,7 +161,7 @@ class Game():
 
             self.frame.after(2000, lambda: self.txt_game.config(text=txts_PlayerTurn[rd.randint(0,len(txts_CpuTurn)-1)]))
             self.frame.after(4500, lambda: self.label_Shoot.config(text=''))
-            self.frame.after(5500, lambda: self.txt_game.config(text='Minha vez agora!'))
+            self.frame.after(5500, lambda: self.txt_game.config(text=txts_Game['Cpu_turn']))
             self.frame.after(8000, self.RR_CpuTurn)
     
     def RR_CpuTurn(self):
@@ -177,7 +174,7 @@ class Game():
             self.label_Shoot.image = photo
             self.label_Shoot.place(relx=0.5,rely=0.5,anchor='center')
             
-            self.txt_game.config(text='Você deu sorte... mas fizemos um acordo, então agora você está livre.')
+            self.txt_game.config(text=txts_Game['win'])
             self.frame.after(5000, self.window.destroy)
         else:
             self.label_Shoot.config(bg='#010200',bd=-1,text='*click*',font=('Niagara Solid',50,'bold'),fg='WHITE')
@@ -185,7 +182,7 @@ class Game():
 
             self.frame.after(2000, lambda:self.txt_game.config(text=txts_CpuTurn[rd.randint(0,len(txts_CpuTurn)-1)]))
             self.frame.after(4500, lambda: self.label_Shoot.config(text=''))
-            self.frame.after(5500, lambda: self.txt_game.config(text='Sua vez agora! Gire de novo.'))
+            self.frame.after(5500, lambda: self.txt_game.config(text=txts_Game['Player_turn']))
             self.frame.after(5002, lambda: self.button_spin.config(state=ACTIVE))
 
     def spinGun(self):
@@ -200,7 +197,7 @@ class Game():
         self.frame.after(2000, lambda: label_spinning.destroy())
         self.frame.after(2001, lambda: self.button_play.config(state=ACTIVE))
         
-        self.frame.after(2200, lambda: self.txt_game.config(text='Agora é só atirar!'))
+        self.frame.after(2200, lambda: self.txt_game.config(text=txts_Game['instructions2']))
 
     def ThirdScreen(self):
         self.frame.destroy()
@@ -219,12 +216,12 @@ class Game():
         label_image2.image = photo
         label_image2.place(relx=0.07,rely=1,anchor='sw')
 
-        self.txt_game = Label(self.frame,text='É só girar o tambor e apertar o gatilho!',
+        self.txt_game = Label(self.frame,text=txts_Game['instructions'],
                                 bg='#040404',fg='WHITE',font=('Arial',16),pady=20,padx=10,relief='ridge')
         self.txt_game.pack(side=TOP,fill=X,anchor='n',padx=400,pady=125)
 
         self.label_Shoot = Label(self.frame)
-        self.button_spin = Button(self.frame, text='GIRAR', command=self.spinGun,
+        self.button_spin = Button(self.frame, text=txts_Game['spin'], command=self.spinGun,
                                 bd=2, borderwidth=3, relief='ridge',
                                 background='#040404', padx=10,
                                 foreground='WHITE', font=('Arial', 16),
@@ -233,7 +230,7 @@ class Game():
                                 activebackground='#040404',
                                 activeforeground='WHITE')
 
-        self.button_play = Button(self.frame,text='ATIRAR',command=self.RR_PlayerTurn,
+        self.button_play = Button(self.frame,text=txts_Game['shoot'],command=self.RR_PlayerTurn,
                                 bd=2, borderwidth=3, relief='ridge',
                                 background='#040404', padx=10,
                                 foreground='WHITE', font=('Arial', 16),
