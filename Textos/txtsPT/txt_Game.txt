@@ -1,6 +1,6 @@
-start=Inicio
-quit=Sair
-options=Opções
+start=INICIAR
+quit=SAIR
+options=OPÇÕES
 made_by=Feito por Luis Castanho
 ready_to_play=Esta pronto para jogar?
 yes=Sim
@@ -15,3 +15,7 @@ instructions=É só girar o tambor e apertar o gatilho!
 instructions2=Agora é só atirar!
 spin=GIRAR
 shoot=ATIRAR
+language=IDIOMA
+return=RETORNAR
+window=TELA
+fullscreen=TELA CHEIA
